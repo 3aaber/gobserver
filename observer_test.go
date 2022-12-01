@@ -1,4 +1,4 @@
-package observer
+package gobserver
 
 import (
 	"log"
@@ -15,15 +15,6 @@ type MessageFormat struct {
 type TestObserver struct {
 	ID      int
 	Message interface{}
-}
-
-func (t *TestObserver) GetData(method string, queryData interface{}) interface{} {
-	return nil
-}
-
-// GetName Get Name of Observer
-func (t *TestObserver) GetName() string {
-	return ""
 }
 
 // Notify Notify

@@ -1,27 +1,25 @@
-package observer
+package gobserver
 
 import "log"
 
-//Observer inteface to implement Notify
+// Observer inteface to implement Notify
 type Observer interface {
 	Notify(interface{})
-	GetName() string
-	GetData(method string, queryData interface{}) interface{}
 }
 
-//Publisher is struct to encapsulate Observer List data
+// Publisher is struct to encapsulate Observer List data
 type Publisher struct {
 	ObserversList map[string][]Observer
 }
 
-//NewPublisher make a new publisher object
+// NewPublisher make a new publisher object
 func NewPublisher() *Publisher {
 	p := new(Publisher)
 	p.ObserversList = make(map[string][]Observer)
 	return p
 }
 
-//AddObserver add a observer implemented from Observer inteface
+// AddObserver add a observer implemented from Observer inteface
 func (s *Publisher) AddObserver(o Observer, channels ...string) {
 	if len(channels) == 0 {
 		// if the channels list is empty, add observer to all existing channels
@@ -36,7 +34,7 @@ func (s *Publisher) AddObserver(o Observer, channels ...string) {
 	}
 }
 
-//RemoveObserver remove a observer from list
+// RemoveObserver remove a observer from list
 func (s *Publisher) RemoveObserver(o Observer, channels ...string) {
 
 	if len(channels) == 0 {
@@ -52,7 +50,7 @@ func (s *Publisher) RemoveObserver(o Observer, channels ...string) {
 	}
 }
 
-//removeObserverSingleChannel observer from a single channel
+// removeObserverSingleChannel observer from a single channel
 func (s *Publisher) removeObserverSingleChannel(o Observer, channel string) {
 
 	// Check if the channel exist
@@ -73,7 +71,7 @@ func (s *Publisher) removeObserverSingleChannel(o Observer, channel string) {
 
 }
 
-//NotifyObserversSync in sync mode for a specific channel
+// NotifyObserversSync in sync mode for a specific channel
 func (s *Publisher) NotifyObserversSync(m interface{}, channel string) {
 	for _, observer := range s.ObserversList[channel] {
 		log.Println(channel, m)
@@ -81,7 +79,7 @@ func (s *Publisher) NotifyObserversSync(m interface{}, channel string) {
 	}
 }
 
-//NotifyObserversASync usin g goroutin  for a specific channel
+// NotifyObserversASync usin g goroutin  for a specific channel
 func (s *Publisher) NotifyObserversASync(m interface{}, channel string) {
 	run := func(message interface{}) {
 		for _, observer := range s.ObserversList[channel] {
