@@ -19,8 +19,8 @@ func NewPublisher() *Publisher {
 	return p
 }
 
-// AddObserver add a observer implemented from Observer inteface
-func (s *Publisher) AddObserver(o Observer, channels ...string) {
+// AddSubject add a observer implemented from Observer inteface
+func (s *Publisher) AddSubject(o Observer, channels ...string) {
 	if len(channels) == 0 {
 		// if the channels list is empty, add observer to all existing channels
 		for chanl := range s.ObserversList {
@@ -34,8 +34,8 @@ func (s *Publisher) AddObserver(o Observer, channels ...string) {
 	}
 }
 
-// RemoveObserver remove a observer from list
-func (s *Publisher) RemoveObserver(o Observer, channels ...string) {
+// RemoveSubject remove a observer from list
+func (s *Publisher) RemoveSubject(o Observer, channels ...string) {
 
 	if len(channels) == 0 {
 		// Remove observer from all channels
@@ -71,16 +71,16 @@ func (s *Publisher) removeObserverSingleChannel(o Observer, channel string) {
 
 }
 
-// NotifyObserversSync in sync mode for a specific channel
-func (s *Publisher) NotifyObserversSync(m interface{}, channel string) {
+// NotifySubjectsSync in sync mode for a specific channel
+func (s *Publisher) NotifySubjectsSync(m interface{}, channel string) {
 	for _, observer := range s.ObserversList[channel] {
 		log.Println(channel, m)
 		observer.Notify(m)
 	}
 }
 
-// NotifyObserversASync usin g goroutin  for a specific channel
-func (s *Publisher) NotifyObserversASync(m interface{}, channel string) {
+// NotifySubjectsASync usin g goroutin  for a specific channel
+func (s *Publisher) NotifySubjectsASync(m interface{}, channel string) {
 	run := func(message interface{}) {
 		for _, observer := range s.ObserversList[channel] {
 			observer.Notify(m)

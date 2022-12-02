@@ -31,9 +31,9 @@ func TestSubject(t *testing.T) {
 	publisher := NewPublisher()
 
 	t.Run("AddObserver", func(t *testing.T) {
-		publisher.AddObserver(testObserver1, "default")
-		publisher.AddObserver(testObserver2, "default")
-		publisher.AddObserver(testObserver3, "default")
+		publisher.AddSubject(testObserver1, "default")
+		publisher.AddSubject(testObserver2, "default")
+		publisher.AddSubject(testObserver3, "default")
 
 		if len(publisher.ObserversList["default"]) != 3 {
 			t.Fail()
@@ -41,7 +41,7 @@ func TestSubject(t *testing.T) {
 	})
 
 	t.Run("RemoveObserver", func(t *testing.T) {
-		publisher.RemoveObserver(testObserver2)
+		publisher.RemoveSubject(testObserver2)
 
 		if len(publisher.ObserversList["default"]) != 2 {
 			t.Errorf("The size of the observer list is not the "+
@@ -81,7 +81,7 @@ func TestSubject(t *testing.T) {
 
 		message := MessageFormat{}
 		message.InstrumentID = "Hello World!"
-		publisher.NotifyObserversSync(message, "default")
+		publisher.NotifySubjectsSync(message, "default")
 
 		for _, observer := range publisher.ObserversList["default"] {
 			printObserver, ok := observer.(*TestObserver)
